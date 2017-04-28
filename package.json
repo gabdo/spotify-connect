@@ -1,13 +1,12 @@
 {
   "name": "reactapp",
   "version": "1.0.0",
-  "description": "React Academy",
+  "description": "HPs",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --hot"
   },
-  "author": "Camilo Rincon",
-  "license": "ISC",
+  "author": "Gabriel Dominguez",
   "dependencies": {
     "babel-core": "^6.24.0",
     "babel-loader": "^6.4.0",
