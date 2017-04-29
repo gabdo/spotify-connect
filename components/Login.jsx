@@ -1,65 +1,57 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React, { Component } from 'react';
+import { browserHistory } from 'react-router';
 
+export default class Login extends Component {
+    handleClick(e) {
+        this.login(function (accessToken) {
+            browserHistory.push('/player/' + accessToken);
+        });
+    }
 
-var stateKey = 'spotify_auth_state';
+    render() {
+        return (
+            <div className="login panel panel-default">
+                <div className="panel-body">
+                    <img src="assets/reactifytransparent.png" />
+                    <h2>
+                    Listen your Spotify Music in the best React App
+                    </h2>
+                    <br /><br />
+                    <a href="javascript:void(0)" onClick={(e) => this.handleClick(e)} className="btn btn-raised btn-default">Log in with Spotify</a>
+                </div>
+            </div>
+        );
+    }
 
-function getHashParams() {
-	var hashParams = {};
-	var e, r = /([^&;=]+)=?([^&;]*)/g,
-	q = window.location.hash.substring(1);
-	while ( e = r.exec(q)) {
-		hashParams[e[1]] = decodeURIComponent(e[2]);
-	}
-	return hashParams;
+    login(callback) {
+        var CLIENT_ID = 'a3c897b5b59d4da693b2adbb10c764a4';
+        var REDIRECT_URI = 'http://localhost:7777/callback/';
+        function getLoginURL(scopes) {
+            return 'https://accounts.spotify.com/authorize?client_id=' + CLIENT_ID +
+                '&redirect_uri=' + encodeURIComponent(REDIRECT_URI) +
+                '&scope=' + encodeURIComponent(scopes.join(' ')) +
+                '&response_type=token';
+        }
+
+        var url = getLoginURL([
+            'user-read-email'
+        ]);
+
+        var width = 450,
+            height = 630,
+            left = (screen.width / 2) - (width / 2),
+            top = (screen.height / 2) - (height / 2);
+
+        window.addEventListener("message", function (event) {
+            var hash = JSON.parse(event.data);
+            if (hash.type == 'access_token') {
+                callback(hash.access_token);
+            }
+        }, false);
+
+        var w = window.open(url,
+            'Spotify',
+            'menubar=no,location=no,resizable=no,scrollbars=no,status=no, width=' + width + ', height=' + height + ', top=' + top + ', left=' + left
+        );
+    }
 }
-
-getHashParams();
-
-function generateRandomString (length) {
-		var text = '';
-		var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-		for (var i = 0; i < length; i++) {
-			text += possible.charAt(Math.floor(Math.random() * possible.length));
-		}
-		return text;
-	}
-
-class LoginForm extends React.Component {
-constructor() {
-	super();
-	
-	this.state = {
-		data: []
-	};
-}
-	loginSpotify (){
-		
-		var client_id = '18cee821e6b04c26b967f27138a8ad18';
-		var redirect_uri = 'http://localhost:7777/';
-		var state = generateRandomString(16);
-		
-		var scope = 'user-read-private user-read-email';
-		var url = 'https://accounts.spotify.com/authorize';
-
-		var params = getHashParams();
-		var access_token = params.access_token,
-		state = params.state,
-		storedState = localStorage.getItem(stateKey);
-
-		url += '?response_type=token';
-		url += '&client_id=' + encodeURIComponent(client_id);
-		url += '&scope=' + encodeURIComponent(scope);
-		url += '&redirect_uri=' + encodeURIComponent(redirect_uri);
-		url += '&state=' + encodeURIComponent(state);
-		window.location = url;
-
-	}
-
-	render() {
-		return(
-			<button type="submit" className= "button-spotify" onClick={this.loginSpotify} id="login-button">LOGIN</button>
-			);
-	}
-}
-export default LoginForm;

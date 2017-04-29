@@ -7,6 +7,7 @@ var config = {
    },
 
    devServer: {
+     historyApiFallback: true,
       inline: true,
       port: 7777
    },
@@ -18,7 +19,7 @@ var config = {
             exclude: /node_modules/,
             loader: 'babel-loader',
             query: {
-               presets: ['es2015', 'react']
+               presets: ['es2015', 'react', 'stage-0']
             }
          }
       ]
