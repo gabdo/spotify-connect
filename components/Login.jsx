@@ -25,7 +25,7 @@ export default class Login extends Component {
 
     login(callback) {
         var CLIENT_ID = 'a3c897b5b59d4da693b2adbb10c764a4';
-        var REDIRECT_URI = 'http://localhost:7777/callback/';
+        var REDIRECT_URI = this.props.location.pathname + '/callback/';
         function getLoginURL(scopes) {
             return 'https://accounts.spotify.com/authorize?client_id=' + CLIENT_ID +
                 '&redirect_uri=' + encodeURIComponent(REDIRECT_URI) +

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import App from './App.jsx';
+import App from './components/App.jsx';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
@@ -20,4 +20,4 @@ ReactDOM.render((
       </Route>
    </Router>
 
-), document.getElementById('app'));
+), document.getElementById('main'));
