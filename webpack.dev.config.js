@@ -2,23 +2,16 @@ const path = require('path')
 const webpack = require('webpack')
 
 module.exports = {
-  devtool: 'source-map',
+  devtool: 'eval',
 
   entry: [
-    'webpack-hot-middleware/client',
     './entry.js'
   ],
 
   output: {
     path: '/',
-    filename: 'bundle.js',
-    publicPath: './public/'
+    filename: 'bundle.js'
   },
-
-  plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
-  ],
 
   module: {
     loaders: [
@@ -36,12 +29,12 @@ module.exports = {
         exclude: path.join(__dirname, 'node_modules')
       },
       {
-        test: /\.scss?$/,
+        test: /\.css?$/,
         loader: 'style!css!sass',
-        include: path.join(__dirname, 'src', 'styles')
+        include: path.join(__dirname, 'assets', 'style')
       },
       {
-        test: /\.png$/,
+        test: /\.(png|jpg)$/,
         loader: 'file'
       },
       {
@@ -49,6 +42,6 @@ module.exports = {
         loader: 'file'
       }
     ]
-  },
-  watch: true
+  }
+
 }

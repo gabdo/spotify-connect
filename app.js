@@ -11,9 +11,10 @@ if (process.env.NODE_ENV !== 'production') {
 
   app.use(webpackHotMiddleware(compiler))
   app.use(webpackDevMiddleware(compiler, {
-    noInfo: true,
+    noInfo: false,
     publicPath: config.output.publicPath
   }))
+  console.log(config.output.publicPath)
 }
 
 app.listen(port)

@@ -12,7 +12,7 @@ export default class Login extends Component {
         return (
             <div className="login panel panel-default">
                 <div className="panel-body">
-                    <img src="assets/reactifytransparent.png" />
+                    <img src="assets/images/reactifytransparent.png" />
                     <h2>
                     Listen your Spotify Music in the best React App
                     </h2>
@@ -24,8 +24,9 @@ export default class Login extends Component {
     }
 
     login(callback) {
-        var CLIENT_ID = 'a3c897b5b59d4da693b2adbb10c764a4';
-        var REDIRECT_URI = this.props.location.pathname + '/callback/';
+        var CLIENT_ID = '706328a3a2d740b891a709e1b495402e';
+        var REDIRECT_URI = window.location.origin + '/callback/';
+        console.log(window.location.origin);
         function getLoginURL(scopes) {
             return 'https://accounts.spotify.com/authorize?client_id=' + CLIENT_ID +
                 '&redirect_uri=' + encodeURIComponent(REDIRECT_URI) +
