@@ -26,7 +26,7 @@ module.exports = {
           presets: [
             'babel-preset-es2015',
             'babel-preset-react',
-            'babel-preset-stage-0',
+            'babel-preset-stage-0'
           ].map(require.resolve),
           plugins: [['react-transform', {
             transforms: [{
