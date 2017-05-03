@@ -51,7 +51,7 @@ export function getMyInfo() {
 
 export function loadPlaylistLists() {
   return (dispatch) => {
-    dispatch ({ type: SPOTIFY_LOAD_PLAYLIST_LIST});
+    dispatch ({ type: SPOTIFY_LOAD_PLAYLIST_LIST });
     let getListOfPlaylists = spotifyApi.getUserPlaylists();
 
     getListOfPlaylists.then(data => {
