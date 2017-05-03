@@ -14,6 +14,7 @@ import {
   getMyInfo,
   setTokens,
   loadMyCollection,
+  loadPlaylistLists,
   playTrack,
   pauseTrack,
   browseAlbum,
@@ -55,6 +56,7 @@ class App extends React.Component {
 
     dispatch(setTokens({ accessToken, refreshToken }));
     dispatch(getMyInfo());
+    dispatch(loadPlaylistLists());
     dispatch(loadMyCollection());
   }
 
@@ -95,6 +97,11 @@ class App extends React.Component {
     this.dispatch(showSearch());
   }
 
+  handleShowPlaylists(e) {
+    e.nativeEvent.preventDefault();
+    this.dispatch(showPlaylists());
+  }
+
   onSearch(text) {
     this.dispatch(search(text));
   }
@@ -120,6 +127,7 @@ class App extends React.Component {
             <ul className="nav nav-pills" style={{ paddingLeft: 30, marginBottom: 40 }}>
               <li className={(mainTab === 'albums') ? 'active' : ''} role="presentation"><a onClick={this.handleShowAlbums.bind(this)} href="#">Albums</a></li>
               <li className={(mainTab === 'search') ? 'active' : ''} role="presentation"><a onClick={this.handleShowSearch.bind(this)} href="#">Search</a></li>
+              <li className={(mainTab === 'playlist') ? 'active' : ''} role="presentation"><a onClick={this.handleShowPlaylists.bind(this)} href="#">Playlists</a></li>
             </ul>
             { (mainTab === 'albums')
               ? <Albums albums={collection.albums} onBrowseAlbum={this.browseAlbum.bind(this)}>
@@ -134,6 +142,12 @@ class App extends React.Component {
                   <p>No results</p>
                 </Albums>
               </div>
+              : <div></div>
+            }
+            { (mainTab === 'playlist')
+              ? <Albums albums={playlist.albums} onBrowseAlbum={this.browseAlbum.bind(this)}>
+                <p>No albums are saved for your account (In spotify, albums and playlists are different)</p>
+              </Albums>
               : <div></div>
             }
 

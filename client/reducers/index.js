@@ -1,12 +1,11 @@
 import {
   SPOTIFY_TOKENS, SPOTIFY_ME_BEGIN, SPOTIFY_ME_SUCCESS, SPOTIFY_ME_FAILURE,
-  SPOTIFY_LOAD_MY_MUSIC_BEGIN, SPOTIFY_LOAD_MY_MUSIC_SUCCESS,
-  SPOTIFY_LOAD_MY_MUSIC_FAILURE, PLAYER_PLAY,
-  SPOTIFY_LOAD_MY_ALBUMS_SUCCESS, SPOTIFY_LOAD_MY_ALBUMS_FAILURE,
-  PLAYLIST_BROWSE_ALBUM, APP_CHANGE_BACKGROUND,
-  APP_PLAYER_PLAYING, APP_PLAYER_STOPPED,
-  APP_SHOW_ALBUMS, APP_SHOW_SEARCH,
-  SPOTIFY_SEARCH_BEGIN, SPOTIFY_SEARCH_SUCCESS, SPOTIFY_SEARCH_FAILURE,
+  SPOTIFY_LOAD_MY_MUSIC_BEGIN, SPOTIFY_LOAD_MY_MUSIC_SUCCESS, SPOTIFY_LOAD_PLAYLIST_LIST,
+  SPOTIFY_LOAD_MY_MUSIC_FAILURE, PLAYER_PLAY, SPOTIFY_LOAD_MY_PLAYLIST_FAILURE,
+  SPOTIFY_LOAD_MY_PLAYLIST_SUCCESS, SPOTIFY_LOAD_MY_ALBUMS_SUCCESS,
+  SPOTIFY_LOAD_MY_ALBUMS_FAILURE, PLAYLIST_BROWSE_ALBUM, APP_CHANGE_BACKGROUND,
+  APP_PLAYER_PLAYING, APP_PLAYER_STOPPED, APP_SHOW_ALBUMS, APP_SHOW_SEARCH,
+  SPOTIFY_SEARCH_BEGIN, SPOTIFY_SEARCH_SUCCESS, SPOTIFY_SEARCH_FAILURE, APP_SHOW_PLAYLIST,
 } from '../actions/actions';
 
 const initialState = {
@@ -19,6 +18,10 @@ const initialState = {
     albums: { items: [] },
     tracks: { items: [] },
   },
+  foundPlaylists: {
+    albums: { items: [] },
+    tracks: { items: [] },
+  },
   playing: {
     preview_url: null,
     album: {
@@ -28,6 +31,10 @@ const initialState = {
     },
   },
   collection: {
+    albums: [],
+    tracks: [],
+  },
+  playlist: {
     albums: [],
     tracks: [],
   },
@@ -66,6 +73,10 @@ export default function reduce(state = initialState, action) {
       return Object.assign({}, state, {
         collection: Object.assign({}, state.collection, { loading: true })
       });
+    case SPOTIFY_LOAD_PLAYLIST_LIST:
+      return Object.assign({}, state, {
+        playlist: Object.assign({}, state.playlist, { loading: true })
+      });
     case SPOTIFY_LOAD_MY_MUSIC_SUCCESS:
       return Object.assign({}, state, {
         collection: Object.assign({}, state.collection,
@@ -85,6 +96,16 @@ export default function reduce(state = initialState, action) {
     case SPOTIFY_LOAD_MY_ALBUMS_FAILURE:
       return Object.assign({}, state, {
         collection: Object.assign({}, state.collection, { loading: false })
+      });
+    case SPOTIFY_LOAD_MY_PLAYLIST_FAILURE:
+      return Object.assign({}, state, {
+        playlist: Object.assign({}, state.playlist, { loading: false })
+      });
+    case SPOTIFY_LOAD_MY_PLAYLIST_SUCCESS:
+      return Object.assign({}, state, {
+        playlist: Object.assign({}, state.playlist, { albums: action.data.items },
+          { loading: false }
+        )
       });
     case PLAYLIST_BROWSE_ALBUM:
       const tracks = (typeof action.album['tracks'] !== 'undefined') ? action.album.tracks.items : [];
@@ -120,6 +141,10 @@ export default function reduce(state = initialState, action) {
     case APP_SHOW_SEARCH:
       return Object.assign({}, state, {
         mainTab: 'search',
+      });
+    case APP_SHOW_PLAYLIST:
+      return Object.assign({}, state, {
+        mainTab: 'playlist',
       });
     case SPOTIFY_SEARCH_SUCCESS:
       return Object.assign({}, state, {
